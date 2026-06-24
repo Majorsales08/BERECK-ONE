@@ -77,6 +77,7 @@ const produtos = [
     imagem: null,
     emoji: "🏆",
   },
+ 
   {
     id: 6,
     nome: "URBAN",
@@ -89,7 +90,9 @@ const produtos = [
     tamanhos: ["M", "G", "GG"],
     imagem: null,
     emoji: "🏙️",
+    
   },
+  
 ];
 
 // ─── ESTADO ────────────────────────────────────────────────
@@ -107,7 +110,7 @@ function renderProdutos() {
     const card = document.createElement("div");
     card.className = "produto-card";
     card.innerHTML = `
-      <div class="produto-img" id="img-${p.id}">
+      <div class="produto-img" id="img-${p.id}" onclick="abrirModal(${p.id})" style="cursor:zoom-in" title="Clique para ver detalhes">
         ${p.imagem
           ? `<img src="${p.imagem}" alt="${p.nome}" />`
           : `<div class="produto-img-placeholder">
@@ -313,31 +316,31 @@ function finalizarPedido() {
   ).join("\n");
 
   const msg = `
-🛍️ *NOVO PEDIDO — BERECK ONE*
+*NOVO PEDIDO — BERECK ONE*
 
 ━━━━━━━━━━━━━━━━━━━━━━━━
-👤 *DADOS DO CLIENTE*
+*DADOS DO CLIENTE*
 Nome: ${nome}
 CPF: ${cpf}
 Gênero: ${genero.value.charAt(0).toUpperCase() + genero.value.slice(1)}
 Telefone: ${telefone}
 
-📦 *ENDEREÇO DE ENTREGA*
+*ENDEREÇO DE ENTREGA*
 CEP: ${cep}
 Rua: ${rua}, Nº ${numero}
 Complemento: ${complemento}
 Bairro: ${bairro}
 Cidade/UF: ${cidadeUF}
 
-🛒 *ITENS DO PEDIDO*
+*ITENS DO PEDIDO*
 ${itens}
 
 ━━━━━━━━━━━━━━━━━━━━━━━━
-💰 *TOTAL: ${formatBRL(total)}*
-💳 *Pagamento: ${pagamentoSel}*
+*TOTAL: ${formatBRL(total)}*
+*Pagamento: ${pagamentoSel}*
 ━━━━━━━━━━━━━━━━━━━━━━━━
 
-Obrigado por comprar na Bereck One! 🖤
+Obrigado por comprar na Bereck One! 
   `.trim();
 
   const url = `https://wa.me/${WHATSAPP_NUM}?text=${encodeURIComponent(msg)}`;
@@ -374,6 +377,112 @@ function showToast(msg) {
   clearTimeout(toastTimer);
   toastTimer = setTimeout(() => t.classList.remove("show"), 3000);
 }
+
+
+let modalProdId = null;
+let modalCorSel = null;
+let modalTamSel = null;
+
+function abrirModal(prodId) {
+  const prod = produtos.find(p => p.id === prodId);
+  if (!prod) return;
+
+  modalProdId = prodId;
+  modalCorSel = prod.cores[0].nome;
+  modalTamSel = selecoes[prodId]?.tamanho || null;
+
+  // Preencher conteúdo
+  document.getElementById("modalNome").textContent  = prod.nome;
+  document.getElementById("modalDesc").textContent  = prod.desc;
+  document.getElementById("modalCorNome").textContent = modalCorSel;
+  document.getElementById("modalEmoji").textContent = prod.emoji;
+  document.getElementById("modalPreco").textContent = formatBRL(prod.preco);
+
+  // Imagem
+  const img = document.getElementById("modalImg");
+  const ph  = document.getElementById("modalPlaceholder");
+  if (prod.imagem) {
+    img.src = prod.imagem; img.alt = prod.nome;
+    img.style.display = "block"; ph.style.display = "none";
+  } else {
+    img.style.display = "none"; ph.style.display = "flex";
+  }
+
+  // Cores
+  const coresEl = document.getElementById("modalCores");
+  coresEl.innerHTML = prod.cores.map((c, i) => `
+    <span
+      class="modal-cor-dot ${i === 0 ? 'ativo' : ''}"
+      style="background:${c.hex}"
+      title="${c.nome}"
+      onclick="modalSelecionarCor('${c.nome}', this)"
+    ></span>
+  `).join("");
+
+  // Tamanhos
+  const tamsEl = document.getElementById("modalTams");
+  tamsEl.innerHTML = prod.tamanhos.map(t => `
+    <button
+      class="modal-tam-btn ${modalTamSel === t ? 'ativo' : ''}"
+      onclick="modalSelecionarTam('${t}', this)"
+    >${t}</button>
+  `).join("");
+
+  // Botão adicionar
+  document.getElementById("modalBtnAdd").onclick = () => adicionarDoModal();
+
+  // Abrir
+  const overlay = document.getElementById("modalOverlay");
+  overlay.classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+
+function fecharModal() {
+  const overlay = document.getElementById("modalOverlay");
+  overlay.classList.remove("open");
+  document.body.style.overflow = "";
+}
+
+function modalSelecionarCor(nome, el) {
+  modalCorSel = nome;
+  document.getElementById("modalCorNome").textContent = nome;
+  document.getElementById("modalCores").querySelectorAll(".modal-cor-dot")
+    .forEach(d => d.classList.remove("ativo"));
+  el.classList.add("ativo");
+}
+
+function modalSelecionarTam(tam, el) {
+  modalTamSel = tam;
+  document.getElementById("modalTams").querySelectorAll(".modal-tam-btn")
+    .forEach(b => b.classList.remove("ativo"));
+  el.classList.add("ativo");
+}
+
+function adicionarDoModal() {
+  if (!modalTamSel) { showToast("⚠️ Selecione um tamanho!"); return; }
+  const prod = produtos.find(p => p.id === modalProdId);
+  carrinho.push({
+    id: Date.now(),
+    prodId: modalProdId,
+    nome: prod.nome,
+    cor: modalCorSel,
+    tamanho: modalTamSel,
+    preco: prod.preco,
+    emoji: prod.emoji,
+  });
+  // Sincronizar com seleções do card
+  selecoes[modalProdId].cor = modalCorSel;
+  selecoes[modalProdId].tamanho = modalTamSel;
+  atualizarCarrinho();
+  fecharModal();
+  showToast(`✅ ${prod.nome} adicionado!`);
+  abrirCarrinho();
+}
+
+// Fechar modal com ESC
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape") fecharModal();
+});
 
 // ─── INIT ─────────────────────────────────────────────────
 renderProdutos();

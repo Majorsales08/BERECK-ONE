@@ -101,6 +101,80 @@ body {
   padding: 40px 24px;
 }
 
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.modal-overlay.open {
+    display: flex;
+}
+
+.modal-container {
+    background: #fff;
+    width: 90%;
+    max-width: 1000px;
+    max-height: 90vh;
+    overflow: auto;
+    border-radius: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+}
+
+.modal-imagem {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+}
+
+.modal-imagem img {
+    width: 100%;
+    max-height: 80vh;
+    object-fit: contain;
+}
+
+.modal-placeholder {
+    display: none;
+    font-size: 120px;
+}
+
+.modal-info {
+    padding: 40px;
+}
+
+.modal-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    border: none;
+    background: none;
+    font-size: 28px;
+    cursor: pointer;
+}
+
+.modal-cor-dot,
+.modal-tam-btn {
+    margin: 5px;
+}
+
+.modal-cor-dot.ativo,
+.modal-tam-btn.ativo {
+    outline: 3px solid black;
+}
+
+@media (max-width: 768px) {
+    .modal-container {
+        grid-template-columns: 1fr;
+    }
+}
+
 /* Clothing tag */
 .tag-wrapper {
   display: flex; flex-direction: column; align-items: center;
