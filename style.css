@@ -36,7 +36,7 @@ body {
 .nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
   background: var(--black);
-  border-bottom: 1px solid rgba(201,168,76,.25);
+  border-bottom: 1px solid rgba(212, 175, 72, 0.363);
 }
 .nav-inner {
   max-width: 1200px; margin: 0 auto; padding: 0 24px;
@@ -85,13 +85,13 @@ body {
 /*-- fundo--*/
 
 .hero-bg-text {
-  position: absolute; top: 50%; left: 50%;
+  position: absolute; top: 48%; left: 50%;
   transform: translate(-50%,-50%);
   font-family: var(--ff-disp);
   font-size: clamp(80px, 18vw, 260px);
   letter-spacing: -.02em;
   color: transparent;
-  -webkit-text-stroke: 1px rgba(175, 132, 13, 0.295);
+  -webkit-text-stroke: 1px rgba(206, 164, 50, 0.226);
   white-space: nowrap; pointer-events: none;
   user-select: none;
 }
@@ -99,6 +99,7 @@ body {
   display: flex; align-items: center; gap: 80px;
   position: relative; z-index: 1;
   padding: 40px 24px;
+ 
 }
 
 .modal-overlay {
@@ -169,6 +170,25 @@ body {
     outline: 3px solid black;
 }
 
+.modal-galeria {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.miniatura {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    border: 2px solid transparent;
+    cursor: pointer;
+    border-radius: 8px;
+}
+
+.miniatura.ativa {
+    border-color: #C9A84C;
+}
+
 @media (max-width: 768px) {
     .modal-container {
         grid-template-columns: 1fr;
@@ -178,18 +198,22 @@ body {
 /* Clothing tag */
 .tag-wrapper {
   display: flex; flex-direction: column; align-items: center;
-  animation: sway 3s ease-in-out infinite;
+  animation: sway 4s ease-in-out infinite;
   transform-origin: top center;
 }
+
 @keyframes sway {
   0%,100% { transform: rotate(-4deg); }
   50%      { transform: rotate(4deg); }
 }
 .tag-string {
-  width: 2px; height: 60px;
+  width: 3px; height: 90px;
   background: linear-gradient(to bottom, var(--gold), transparent);
   margin-bottom: -4px;
   order: -1;
+  position: relative;
+  left: -30vh;
+  
 }
 .tag {
   background: var(--off);
@@ -199,25 +223,31 @@ body {
   display: flex; flex-direction: column; gap: 6px; align-items: center;
   position: relative; min-width: 160px;
   box-shadow: 0 8px 32px rgba(0,0,0,.6);
+  left: -30vh
+  
 }
 .tag::before {
   content: '';
-  width: 16px; height: 16px; border-radius: 50%;
+  width: 16px; height: 15px; border-radius: 50%;
   background: var(--black); border: 2px solid var(--gold);
-  position: absolute; top: -9px;
+  position: absolute; top: -10px;
+  
 }
 .tag-brand {
   font-family: var(--ff-disp); font-size: 1.3rem;
   letter-spacing: .15em; color: var(--black);
+  
 }
 .tag-line {
   font-family: var(--ff-mono); font-size: .6rem;
   letter-spacing: .12em; color: var(--gray);
   text-transform: uppercase;
+ 
 }
 .tag-size {
   font-family: var(--ff-disp); font-size: 1rem;
   color: var(--gold); letter-spacing: .2em; margin-top: 4px;
+  
 }
 
 /* Hero text */

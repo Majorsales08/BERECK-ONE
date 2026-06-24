@@ -11,7 +11,7 @@ const WHATSAPP_NUM = "14988349715"; // ← SUBSTITUA PELO SEU NÚMERO
 const produtos = [
   {
     id: 1,
-    nome: "ESSENTIAL",
+    nome: "BEYOND",
     desc: "Camiseta básica premium com caimento perfeito. 100% algodão penteado.",
     preco: 89.90,
     cores: [
@@ -20,8 +20,13 @@ const produtos = [
       { nome: "Cinza",   hex: "#6B6B6B" },
     ],
     tamanhos: ["M", "G", "GG"],
-    imagem: "img.overs/over1.jpeg", // Coloque o caminho da foto aqui: "fotos/essential.jpg"
     emoji: "👕",
+    imagem1: [
+      "img/over1.jpeg",
+      "img/over2.jpeg",
+      "img/over3.jpeg"
+
+    ],// Coloque o caminho da foto aqui: "fotos/essential.jpg" 
   },
   {
     id: 2,
@@ -94,6 +99,17 @@ const produtos = [
   },
   
 ];
+
+
+function trocarImagemModal(src, el) {
+  document.getElementById("modalImg").src = src;
+
+  document.querySelectorAll(".miniatura")
+    .forEach(img => img.classList.remove("ativa"));
+
+  el.classList.add("ativa");
+
+}
 
 // ─── ESTADO ────────────────────────────────────────────────
 let carrinho = [];
