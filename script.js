@@ -21,12 +21,7 @@ const produtos = [
     ],
     tamanhos: ["M", "G", "GG"],
     emoji: "👕",
-    imagem1: [
-      "img/over1.jpeg",
-      "img/over2.jpeg",
-      "img/over3.jpeg"
-
-    ],// Coloque o caminho da foto aqui: "fotos/essential.jpg" 
+    imagem: null ,// Coloque o caminho da foto aqui: "fotos/essential.jpg" 
   },
   {
     id: 2,
@@ -99,6 +94,7 @@ const produtos = [
   },
   
 ];
+
 
 
 function trocarImagemModal(src, el) {
