@@ -44,21 +44,16 @@
   </section>
 
   <!-- ══ COLEÇÃO ══ -->
+
   <section class="colecao" id="colecao">
     <div class="container">
       <div class="section-header">
         <span class="eyebrow">NOVA COLEÇÃO 2026</span>
         <h2>ESCOLHA A SUA</h2>
       </div>
-
       <div class="produtos-grid" id="produtosGrid">
-        <!-- Gerados por JS -->
       </div>
     </div>
-    <img id="modalImg" src="" alt="">
-
-    <div id="modalGaleria" class="modal-galeria"></div>
-
   </section>
 
   
@@ -200,8 +195,8 @@
             <label class="pag-card" id="dinheiro-card">
               <input type="radio" name="pagamento" value="Dinheiro" onchange="selecionarPag(this)" />
               <div class="pag-icon">💵</div>
-              <span>Dinheiro</span>
-              <small>Na entrega</small>
+              <span>Debito</span>
+              <small>Á vista</small>
             </label>
           </div>
         </div>
@@ -222,6 +217,11 @@
           <span class="logo">BERECK<span>ONE &reg;</span></span>
           <p>Moda que fala por você.</p>
         </div>
+
+        <div class = "ajuda">
+          <a><p>Fale conosco</p></a>
+        </div>
+
         <div class="footer-info">
           <p>&copy; 2026 Bereck One. Todos os direitos reservados.</p><br>
           <p> Desenvolvido por Marjory Sales</p>
@@ -236,39 +236,40 @@
   <!-- ══ MODAL DO PRODUTO ══ -->
 <div class="modal-overlay" id="modalOverlay" onclick="fecharModal()">
     <div class="modal-container" onclick="event.stopPropagation()">
-
         <button class="modal-close" onclick="fecharModal()">✕</button>
 
         <div class="modal-imagem">
-            <img id="modalImg" src="" alt="" />
 
-            <div class="modal-placeholder" id="modalPlaceholder">
+            <img id="modalImg" src="" alt="">
+            <div id="modalPlaceholder" class="modal-placeholder">
                 <span id="modalEmoji">👕</span>
             </div>
+
+            <!-- Miniaturas -->
+            <div id="modalGaleria" class="modal-galeria"></div>
         </div>
 
         <div class="modal-info">
+
             <h2 id="modalNome"></h2>
-
             <p id="modalDesc"></p>
-
             <p>
-                Cor selecionada:
+                Cor:
                 <strong id="modalCorNome"></strong>
             </p>
 
             <div id="modalCores"></div>
-
             <h4>Tamanho</h4>
             <div id="modalTams"></div>
-
             <h3 id="modalPreco"></h3>
 
-            <button class="btn-primary" id="modalBtnAdd">
+            <button
+                class="btn-primary"
+                id="modalBtnAdd">
+
                 ADICIONAR AO CARRINHO
             </button>
         </div>
-
     </div>
 </div>
 

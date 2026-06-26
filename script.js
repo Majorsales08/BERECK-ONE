@@ -9,33 +9,49 @@ const WHATSAPP_NUM = "14988349715"; // ← SUBSTITUA PELO SEU NÚMERO
 
 // ─── CATÁLOGO DE PRODUTOS ──────────────────────────────────
 const produtos = [
+
   {
     id: 1,
     nome: "BEYOND",
     desc: "Camiseta básica premium com caimento perfeito. 100% algodão penteado.",
     preco: 89.90,
-    cores: [
-      { nome: "Preto",   hex: "#0A0A0A" },
-      { nome: "Branco",  hex: "#F5F0E8" },
-      { nome: "Cinza",   hex: "#6B6B6B" },
+
+    imagens: [
+      "img/over1.jpeg",
+      "img/over2.jpeg",
+      "img/over3.jpeg",
+      "img/over4.jpeg"
     ],
-    tamanhos: ["M", "G", "GG"],
-    emoji: "👕",
-    imagem: null ,// Coloque o caminho da foto aqui: "fotos/essential.jpg" 
+
+    cores: [
+      { nome: "Preto", hex: "#0A0A0A" },
+      { nome: "Branco", hex: "#F5F0E8" },
+      { nome: "Cinza", hex: "#6B6B6B" }
+    ],
+
+    tamanhos: ["M","G","GG"]
   },
+
   {
-    id: 2,
-    nome: "STATEMENT",
-    desc: "Estampa gráfica exclusiva Bereck One. Algodão 30.1 fio a fio.",
-    preco: 119.90,
-    cores: [
-      { nome: "Preto",   hex: "#0A0A0A" },
-      { nome: "Dourado", hex: "#C9A84C" },
+    id:2,
+    nome:"STATEMENT",
+    desc:"Estampa gráfica exclusiva Bereck One.",
+    preco:119.90,
+
+    imagens:[
+      "img/statement1.jpeg",
+      "img/statement2.jpeg",
+      "img/statement3.jpeg"
     ],
-    tamanhos: ["M", "G", "GG"],
-    imagem: null,
-    emoji: "🖤",
+
+    cores:[
+      {nome:"Preto",hex:"#0A0A0A"},
+      {nome:"Dourado",hex:"#C9A84C"}
+    ],
+
+    tamanhos:["M","G","GG"]
   },
+
   {
     id: 3,
     nome: "OVERSIZE",
@@ -97,16 +113,17 @@ const produtos = [
 
 
 
-function trocarImagemModal(src, el) {
-  document.getElementById("modalImg").src = src;
+function trocarImagemModal(src, elemento){
 
-  document.querySelectorAll(".miniatura")
-    .forEach(img => img.classList.remove("ativa"));
+    document.getElementById("modalImg").src = src;
 
-  el.classList.add("ativa");
+    document.querySelectorAll(".miniatura").forEach(img=>{
+        img.classList.remove("ativa");
+    });
+
+    elemento.classList.add("ativa");
 
 }
-
 // ─── ESTADO ────────────────────────────────────────────────
 let carrinho = [];
 let selecoes = {}; // {prodId: {cor, tamanho}}
@@ -124,10 +141,10 @@ function renderProdutos() {
     card.innerHTML = `
       <div class="produto-img" id="img-${p.id}" onclick="abrirModal(${p.id})" style="cursor:zoom-in" title="Clique para ver detalhes">
         ${p.imagem
-          ? `<img src="${p.imagem}" alt="${p.nome}" />`
+          ? `<img src="${p.imagem[0]}" alt="${p.nome}" />`
           : `<div class="produto-img-placeholder">
                <span class="icon">${p.emoji}</span>
-               <span>FOTO EM BREVE</span>
+               <span>SEM FOTO</span>
              </div>`
         }
         <div class="cor-badge" id="cores-${p.id}">
@@ -191,7 +208,7 @@ function adicionarAoCarrinho(prodId) {
     cor: sel.cor,
     tamanho: sel.tamanho,
     preco: prod.preco,
-    emoji: prod.emoji,
+    emoji: prod.imagens[0],
   });
   atualizarCarrinho();
   showToast(`✅ ${prod.nome} adicionado!`);
@@ -215,7 +232,7 @@ function atualizarCarrinho() {
   }
   container.innerHTML = carrinho.map(item => `
     <div class="cart-item">
-      <div class="cart-item-img">${item.emoji}</div>
+      <div class="cart-item-img">"${item.imagens}"</div>
       <div class="cart-item-info">
         <div class="cart-item-nome">${item.nome}</div>
         <div class="cart-item-meta">${item.cor} · Tamanho ${item.tamanho}</div>
@@ -413,12 +430,22 @@ function abrirModal(prodId) {
   // Imagem
   const img = document.getElementById("modalImg");
   const ph  = document.getElementById("modalPlaceholder");
-  if (prod.imagem) {
-    img.src = prod.imagem; img.alt = prod.nome;
-    img.style.display = "block"; ph.style.display = "none";
-  } else {
-    img.style.display = "none"; ph.style.display = "flex";
-  }
+ img.src = prod.imagens[0];
+
+const galeria = document.getElementById("modalGaleria");
+
+galeria.innerHTML = "";
+
+prod.imagens.forEach((foto,index)=>{
+
+    galeria.innerHTML += `
+        <img
+            src="${foto}"
+            class="miniatura ${index==0?"ativa":""}"
+            onclick="trocarImagemModal('${foto}',this)">
+    `;
+
+});
 
   // Cores
   const coresEl = document.getElementById("modalCores");
